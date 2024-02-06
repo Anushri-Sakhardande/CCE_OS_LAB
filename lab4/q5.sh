@@ -1,15 +1,16 @@
 #!/bin/sh
 
-num_patterns=$(( $# - 1 ))
-input_file="${!num_patterns}"
+num_patterns=$(( $# ))
 patterns=("${@:1:num_patterns}")
+input_file="${!num_patterns}"
 
-while true; do
+
+while true;do
     echo "a. Search the patterns in the given input file."
     echo "b. Delete all occurrences of the pattern in the given input file."
     echo "c. Exit"
 
-    read -p "Enter your choice (a/b/c): " choice
+    read choice
 
     case "$choice" in
         a)
@@ -33,4 +34,5 @@ while true; do
             echo "Invalid choice. Please enter 'a', 'b', or 'c'."
             ;;
     esac
+
 done

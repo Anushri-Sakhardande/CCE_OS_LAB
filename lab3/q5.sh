@@ -1,9 +1,9 @@
 #!/bin/bash
 
-echo "Enter the file extension (without dot):"
+echo "Enter the file extension"
 read ext
 
-echo "Enter the destination folder:"
+echo "Enter the destination folder"
 read dest
 
 mkdir -p "$dest"

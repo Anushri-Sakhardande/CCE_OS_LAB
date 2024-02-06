@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 echo "Which folder would you like to check"
 read folder

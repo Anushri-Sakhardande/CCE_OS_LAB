@@ -1,4 +1,4 @@
-x#!/bin/bash
+#!/bin/bash
 
 echo "Enter the text file"
 read file
