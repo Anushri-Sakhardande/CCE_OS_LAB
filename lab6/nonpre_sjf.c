@@ -11,34 +11,42 @@ typedef struct{
 
 int main(){
 	int time=0;
-	int waiting_time[4];
-	int turaround_time[4];
-	proc process[3];
+	int waiting_time[6];
+	int turnaround_time[6];
+	proc process[5];
 	int i,j;
 	int tot_comp=0;
-	for(i=0;i<3;i++){
-		printf("Enter the process burst time and id");
-		scanf("%d",&process[i].burst_time);
+	for(i=0;i<5;i++){
+		printf("Enter the process id, arrival time and burst time");
 		scanf("%d",&process[i].pid);
 		scanf("%d",&process[i].arrival_time);
+		scanf("%d",&process[i].burst_time);
 		process[i].completed=false;
 	}
-	while(tot_comp<3){
-		int min_burst=INT_MAX;
-		int min=-1;
-		for(j=0;j<3;j++){
-			if(process[j].arrival_time<=time && !process[j].completed && process[j].burst_time < min_burst){
-				min=j;
-				min_burst = process[j].burst_time;	
-			}
-			else if(j==2 && min==0){
-				time++;
-			} 
-		}
-		if(min>-1){
-			time+=process[min].burst_time;
-			waiting_time
-		}
+	while(tot_comp<5){
+		int min_burst = INT_MAX;
+        int min = -1;
+
+        for (j = 0; j < 5; j++) {
+            if (process[j].arrival_time <= time && !process[j].completed && process[j].burst_time < min_burst) {
+                min = j;
+                min_burst = process[j].burst_time;
+            }
+        }
+
+        if (min > -1) {
+            time += process[min].burst_time;
+            waiting_time[min] = time - process[min].arrival_time - process[min].burst_time;
+            turnaround_time[min] = time - process[min].arrival_time;
+            process[min].completed = true;
+            tot_comp++;
+        } else {
+            time++;
+        }
 	}	
+	printf("Process\tWaiting Time\tTurnaround Time\n");
+		for (i = 0; i < 5; i++) {
+			printf("%d\t%d\t\t%d\n", process[i].pid, waiting_time[i], turnaround_time[i]);
+		}
 	return 0;
 }
