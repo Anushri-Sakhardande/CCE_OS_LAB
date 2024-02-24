@@ -1,0 +1,5 @@
+1. These codes kinda half ChatGPT(for the threads part) and the other half partly understood for notes.
+2. There is a semaphore library but idk if we were supposed to use that it sexily gives the initialization,signal and wait
+3. These kinda are in an infinite loop because of how it was described in the manual
+4. That being said it's really annoying so I've had to do the thread sleep so I can actually see the output
+5. Had to include an extra function for philosophers

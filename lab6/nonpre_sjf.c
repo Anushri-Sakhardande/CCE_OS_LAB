@@ -17,7 +17,7 @@ int main(){
 	int i,j;
 	int tot_comp=0;
 	for(i=0;i<5;i++){
-		printf("Enter the process id, arrival time and burst time");
+		printf("Enter the process id, arrival time and burst time\n");
 		scanf("%d",&process[i].pid);
 		scanf("%d",&process[i].arrival_time);
 		scanf("%d",&process[i].burst_time);
@@ -27,7 +27,7 @@ int main(){
 		int min_burst = INT_MAX;
         int min = -1;
 
-        for (j = 0; j < 5; j++) {
+        for (j = 4; j >=0; j--) {
             if (process[j].arrival_time <= time && !process[j].completed && process[j].burst_time < min_burst) {
                 min = j;
                 min_burst = process[j].burst_time;
@@ -35,6 +35,7 @@ int main(){
         }
 
         if (min > -1) {
+			printf("Process pid:%d is executing at time:%d\n",process[min].pid,time);
             time += process[min].burst_time;
             waiting_time[min] = time - process[min].arrival_time - process[min].burst_time;
             turnaround_time[min] = time - process[min].arrival_time;
