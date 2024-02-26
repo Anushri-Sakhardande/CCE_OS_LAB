@@ -1,3 +1,6 @@
+//GOOD LUCK TRYING TO UNDERSTAND THIS, EVERYTHING REQUIRED INFINITE NUMBER OF VARIBLRS AND MULTIPLE TRIES. I TRIED NAMING WELL BUT YEAH NOT PERFECTLY READABLE 
+//Round Robin having issues :/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -38,16 +41,17 @@ void enqueue(element e){
     }
 }
 
-int waiting_time[6];
-int turnaround_time[6];
-proc process[5];
+//calculate for each
+int waiting_time[MAX+1];
+int turnaround_time[MAX+1];
+proc process[MAX];
 
 void pre_sjf()
 {
     int time=0;
     int i,j;
 	int tot_comp=0;
-    for (i = 0; i < 5; i++)
+    for (i = 0; i < MAX; i++)
     {
         printf("Enter the process id, arrival time and  burst time\n");
         scanf("%d", &process[i].pid);
@@ -56,11 +60,11 @@ void pre_sjf()
         process[i].remaining_time=process[i].burst_time;
         process[i].completed = false;
     }
-    while(tot_comp<5){
+    while(tot_comp<MAX){
 		int min_burst = INT_MAX;
         int min = -1;
 
-        for (j = 4; j >=0; j--) {
+        for (j = MAX-1; j >=0; j--) {
             if (process[j].arrival_time <= time && !process[j].completed && process[j].burst_time < min_burst) {
                 min = j;
                 min_burst = process[j].burst_time;
@@ -80,7 +84,7 @@ void pre_sjf()
         time++;
 	}	
 	printf("Process\tWaiting Time\tTurnaround Time\n");
-	for (i = 0; i < 5; i++) {
+	for (i = 0; i < MAX; i++) {
 		printf("%d\t%d\t\t%d\n", process[i].pid, waiting_time[i], turnaround_time[i]);
 	}
 }
@@ -91,7 +95,7 @@ void rr()
     int i,j;
 	int tot_comp=0;
     int quantum =3;
-    for (i = 0; i < 5; i++)
+    for (i = 0; i < MAX; i++)
     {
         printf("Enter the process id, arrival time and  burst time\n");
         scanf("%d", &process[i].pid);
@@ -100,10 +104,10 @@ void rr()
         process[i].remaining_time=process[i].burst_time;
         process[i].completed = false;
     }
-    while(tot_comp<5){
+    while(tot_comp<MAX){
         element e;
-        for (j = 0; j <5; j++) {
-            if (process[j].arrival_time <= time && !process[j].completed) {
+        for (j = 0; j <MAX; j++) {
+            if (process[j].arrival_time >= time && !process[j].completed) {
                 e.key = process[j];
                 enqueue(e);
                 process[j].completed=true;
@@ -114,7 +118,7 @@ void rr()
         p.completed=false;
         if (p.pid > -1) {
             printf("Process pid:%d is executing at time:%d\n", p.pid, time);
-            int sub_time = (p.remaining_time>quantum)?-quantum:p.remaining_time;
+            int sub_time = (p.remaining_time>quantum)?quantum:p.remaining_time;
             p.remaining_time -=sub_time;
             time+=sub_time;
             if (p.remaining_time == 0) {
@@ -131,7 +135,7 @@ void rr()
         }
 	}	
 	printf("Process\tWaiting Time\tTurnaround Time\n");
-	for (i = 0; i < 5; i++) {
+	for (i = 0; i < MAX; i++) {
 		printf("%d\t%d\t\t%d\n", process[i].pid, waiting_time[i], turnaround_time[i]);
 	}
 }
@@ -141,7 +145,7 @@ void nonpre_pr()
     int time=0;
     int i,j;
 	int tot_comp=0;
-    for (i = 0; i < 5; i++)
+    for (i = 0; i < MAX; i++)
     {
         printf("Enter the process id, arrival time, burst time and priority\n");
         scanf("%d", &process[i].pid);
@@ -150,11 +154,11 @@ void nonpre_pr()
         scanf("%d",&process[i].priority);
         process[i].completed = false;
     }
-    while(tot_comp<5){
+    while(tot_comp<MAX){
 		int max_priority = INT_MAX;
         int max = -1;
 
-        for (j = 4; j >=0; j--) {
+        for (j = MAX-1; j >=0; j--) {
             if (process[j].arrival_time <= time && !process[j].completed && process[j].priority < max_priority) {
                 max = j;
                 max_priority = process[j].priority;
@@ -173,7 +177,7 @@ void nonpre_pr()
         }
 	}	
 	printf("Process\tWaiting Time\tTurnaround Time\n");
-	for (i = 0; i < 5; i++) {
+	for (i = 0; i < MAX; i++) {
 		printf("%d\t%d\t\t%d\n", process[i].pid, waiting_time[i], turnaround_time[i]);
 	}
 }
@@ -185,7 +189,7 @@ int main()
     {
         printf("Would you like to perform\n");
         printf("0.Exit\n");
-        printf("1.Preemptive Shortest Job First(SJF)\n");
+        printf("1.Preemptive Shortest Job First\n");
         printf("2.Round Robin(RR)\n");
         printf("3.Non-preemptive priority Scheduling\n");
         scanf("%d", &choice);
