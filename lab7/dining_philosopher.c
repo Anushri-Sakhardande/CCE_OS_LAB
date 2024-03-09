@@ -79,7 +79,7 @@ int main(){
         pthread_create(&philosophers[i], NULL, philosopher, &philosophers_ids[i]);
     }
 
-    // Join philosopher threads (will never be reached due to infinite loop in philosopher function)
+    // Join philosopher threads 
     for (i = 0; i < 5; i++) {
         pthread_join(philosophers[i], NULL);
     }

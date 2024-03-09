@@ -2,6 +2,7 @@
 #include <sys/types.h>
 #include <sys/wait.h> 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 void main()
@@ -23,7 +24,7 @@ void main()
     pid=fork();
     if (pid == 0)
     {
-        printf("Child\n")
+        printf("Child\n");
         for (i = 0; i < 5; i++)
         {
             for (j = 0; j < 5 - i -1; j++)

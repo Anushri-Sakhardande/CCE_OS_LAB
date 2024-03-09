@@ -24,9 +24,10 @@ void bubble(char *arr[], int n) {
 
 
 void selection(char *arr[], int n) {
-    for (int i = 0; i < n - 1; i++) {
+    int i,j;
+    for (i = 0; i < n - 1; i++) {
         int min_idx = i;
-        for (int j = i + 1; j < n; j++) {
+        for (j = i + 1; j < n; j++) {
             if (strcmp(arr[j], arr[min_idx]) < 0) {
                 min_idx = j;
             }
@@ -41,12 +42,12 @@ void selection(char *arr[], int n) {
 }
 
 int main(){
-    int N;
-    printf("Enter the number of strings (N): ");
+    int N,i;
+    printf("Enter the number of strings:\n ");
     scanf("%d", &N);
     char **strings = (char **)malloc(N * sizeof(char *));
     printf("Enter %d strings:\n", N);
-    for (int i = 0; i < N; i++) {
+    for (i = 0; i < N; i++) {
         strings[i] = (char *)malloc(100 * sizeof(char));
         printf("String %d: ", i + 1);
         scanf("%s", strings[i]);
