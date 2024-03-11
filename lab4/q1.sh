@@ -1,8 +1,7 @@
 #!/bin/sh
 
-echo "Enter the name of the file to be copied"
-read file
+echo "Entered file will be copied"
 
-cp "$file" "duplicate_$file"
+cp "$1" "duplicate_$1"
 echo "File duplicated"
 
