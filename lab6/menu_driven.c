@@ -1,11 +1,11 @@
 //GOOD LUCK TRYING TO UNDERSTAND THIS, EVERYTHING REQUIRED INFINITE NUMBER OF VARIBLRS AND MULTIPLE TRIES. I TRIED NAMING WELL BUT YEAH NOT PERFECTLY READABLE 
-//Round Robin having issues :/
+//Round Robin having issues :/ FIXED YEEE:))
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <limits.h>
-#define MAX 5
+#define MAX 4
 typedef struct
 {
     int arrival_time;
@@ -16,17 +16,14 @@ typedef struct
     bool completed;
 } proc;
 
-typedef struct{
-    proc key;
-}element;
 
-element Q[MAX];
+int Q[100];
 int r=-1;
 int f=-1;
 
-element dequeue(){
-    element ret;
-    ret.key.pid=-1;
+int dequeue(){
+    int ret;
+    ret=-1;
     if(f!=r){
         f++;
         ret = Q[f];
@@ -34,8 +31,8 @@ element dequeue(){
     return ret;
 }
 
-void enqueue(element e){
-    if(r<MAX){
+void enqueue(int e){
+    if(r<100){
         r++;
         Q[r]= e;
     }
@@ -65,9 +62,9 @@ void pre_sjf()
         int min = -1;
 
         for (j = MAX-1; j >=0; j--) {
-            if (process[j].arrival_time <= time && !process[j].completed && process[j].burst_time < min_burst) {
+            if (process[j].arrival_time <= time && !process[j].completed && process[j].remaining_time < min_burst) {
                 min = j;
-                min_burst = process[j].burst_time;
+                min_burst = process[j].remaining_time;
             }
         }
 
@@ -75,8 +72,8 @@ void pre_sjf()
 			printf("Process pid:%d is executing at time:%d\n",process[min].pid,time);
             process[min].remaining_time--;
             if(process[min].remaining_time==0){
-                waiting_time[min] = time - process[min].arrival_time - process[min].burst_time;
-                turnaround_time[min] = time - process[min].arrival_time;
+                waiting_time[min] = (time+1) - process[min].arrival_time - process[min].burst_time;
+                turnaround_time[min] = (time+1) - process[min].arrival_time;
                 process[min].completed = true;
                 tot_comp++;
             }
@@ -95,6 +92,7 @@ void rr()
     int i,j;
 	int tot_comp=0;
     int quantum =3;
+    int min=-1;
     for (i = 0; i < MAX; i++)
     {
         printf("Enter the process id, arrival time and  burst time\n");
@@ -105,30 +103,27 @@ void rr()
         process[i].completed = false;
     }
     while(tot_comp<MAX){
-        element e;
         for (j = 0; j <MAX; j++) {
-            if (process[j].arrival_time >= time && !process[j].completed) {
-                e.key = process[j];
-                enqueue(e);
-                process[j].completed=true;
+            if (process[j].arrival_time <= time && !process[j].completed) {
+                enqueue(j);
+                process[j].completed=true; // once process is enqueued in this turn I don't wanna include it in the next turn so I'm gonna temporarily mark it as completed so it is omitted in the immediate next pass
             }
         }
-
-        proc p = dequeue().key;
-        p.completed=false;
-        if (p.pid > -1) {
-            printf("Process pid:%d is executing at time:%d\n", p.pid, time);
-            int sub_time = (p.remaining_time>quantum)?quantum:p.remaining_time;
-            p.remaining_time -=sub_time;
+        //once process has executed one time quantum we can again make the temporary completed to false
+        if(min>-1)
+            process[min].completed=false;
+        min = dequeue();
+        if (min > -1) {
+            printf("Process pid:%d is executing at time:%d\n", process[min].pid, time);
+            int sub_time = (process[min].remaining_time>quantum)?quantum:process[min].remaining_time;
+            process[min].remaining_time -=sub_time;
             time+=sub_time;
-            if (p.remaining_time == 0) {
-                waiting_time[p.pid] = time - p.arrival_time - p.burst_time;
-                turnaround_time[p.pid] = time - p.arrival_time;
-                process[p.pid].completed = true;
+            if (process[min].remaining_time == 0) {
+                waiting_time[min] = time - process[min].arrival_time - process[min].burst_time;
+                turnaround_time[min] = time - process[min].arrival_time;
+                process[min].completed = true;
+                min=-1; // ensuring completed process doesn't get get marked as incomplete again
                 tot_comp++;
-            } else {
-                e.key=p;
-                enqueue(e);
             }
         } else {
             time++;
