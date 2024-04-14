@@ -44,35 +44,44 @@ int main()
         }
         completed[i] = false;
     }
-	bool eligible;	
-	bool safe=true;
-	int completed_no=0;
-	while(safe && completed_no<m){
-		printf("Safe");
-		safe = false;
-		for(i=0;i<m;i++){
-            if(!completed[i]){
-                eligible=true;
-                for(j=0;j<n;j++){
-                    if(available[j]<need[i][j]){
-                        eligible=false;
-                        break;
-                    }
-                }
-                if(eligible){
-                    printf("Process %d is executing",i);
-                    for(j=0;j<m;j++){
-                        available[i]+=allocation[i][j];
-                    }
-                    completed[i]=true;
-                    completed_no++;
-                    safe=true;
-                }	
-            }	
-		}
-		
-	}
-	if(safe){
+	bool safe = true;
+int completed_no = 0;
 
+while (completed_no < m) {
+    bool found = false;
+    
+    for (int i = 0; i < m; i++) {
+        if (!completed[i]) { 
+            bool canExecute = true;
+            for (int j = 0; j < n; j++) {
+                if (need[i][j] > available[j]) { 
+                    canExecute = false;
+                    break;
+                }
+            }
+            if (canExecute) { 
+                found = true;
+                printf("Process %d is executing\n", i);
+                for (int j = 0; j < n; j++) {
+                    available[j] += allocation[i][j]; 
+                }
+                completed[i] = true; 
+                completed_no++; 
+                break; 
+            }
+        }
     }
+
+    if (!found) { 
+        safe = false;
+        break;
+    }
+}
+
+if (safe) {
+    printf("Safe sequence\n");
+} else {
+    printf("Unsafe sequence\n");
+}
+
 }

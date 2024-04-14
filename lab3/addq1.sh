@@ -9,7 +9,7 @@ if [ "$no" -lt 2 ]; then
 is_prime=false
 else
 for((i=2; i <=$((no/2)); i++));do
-if [ $((no % i)) -eq 0 ];then
+if [ "$((no % i))" -eq 0 ];then
 is_prime=false
 break
 fi

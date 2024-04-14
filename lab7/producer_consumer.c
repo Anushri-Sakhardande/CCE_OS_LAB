@@ -12,7 +12,7 @@ int *buffer;
 //general semaphores 
 int empty=capacity,full=0;
 //binary semaphores
-int pmutex=1,cmutex=1;
+int mutex=1;
 int in =1, out=1;
 
 void wait(int *s){
@@ -26,34 +26,38 @@ void signal(int *s){
 
 
 void *producer(void *arg) {
+    int i=10;
     do{
         //produce data 
         produced_item++; 
         wait(&empty);
-        wait(&pmutex);
+        wait(&mutex);
         //put into buffer
         buffer[in] = produced_item;
         printf("Produced: %d\n", produced_item);
         in = (in + 1) % capacity;
-        signal(&pmutex);
+        signal(&mutex);
         signal(&full);
+        i--;
         usleep(rand() % 1000000);
-    }while(1);
+    }while(i);
     pthread_exit(NULL);
 }
 
 void *consumer(void *arg) {
+    int i=10;
     do{
         wait(&full);
-        wait(&cmutex);
+        wait(&mutex);
         //use consumed data
         consumed_item = buffer[out];
         printf("Consumed: %d\n", consumed_item);
         out = (out + 1) % capacity;
-        signal(&cmutex);
+        signal(&mutex);
         signal(&empty);
+        i--;
         usleep(rand() % 1000000);
-    }while(1);
+    }while(i);
     pthread_exit(NULL);
 }
 

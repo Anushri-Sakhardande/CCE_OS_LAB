@@ -23,6 +23,7 @@ void signal(int *s){
 }
 
 void *reader(void *arg) { 
+    int reader_id = *((int *) arg);
     do{
         wait(&mutex);
         readcount++;
@@ -31,7 +32,7 @@ void *reader(void *arg) {
         }    
         signal(&mutex);
         //perform reading
-        printf("Value read by readers %d of shared data:%d\n",readcount,shared_data);
+        printf("Value read by reader %d of shared data:%d\n",reader_id,shared_data);
         wait(&mutex);
         readcount--;
         if(readcount==0){
@@ -39,19 +40,20 @@ void *reader(void *arg) {
         }
         signal(&mutex);
         usleep(rand() % 1000000);
-    }while(1);
+    }while(shared_data!=10);
     pthread_exit(NULL);
 }
 
 void *writer(void *arg) {
+    int writer_id = *((int *) arg);
     do{
         wait(&wrt);
         //writing is performed
-        printf("Writer Modified:%d\n",shared_data);
+        printf("Writer %d Modified:%d\n",writer_id,shared_data);
         shared_data++;
         signal(&wrt);
         usleep(rand() % 1000000);
-    }while (1);
+    }while (shared_data!=10);
     pthread_exit(NULL);
 }
 
