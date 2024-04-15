@@ -69,10 +69,10 @@ int main() {
     }
 
     printf("Enter the initial direction of movement (-1 for left, 1 for right): ");
-    bool direction;
-    scanf("%d", &direction);
+    int dir;
+    scanf("%d", &dir);
 
-    int overhead = look(track, n, head, direction);
+    int overhead = look(track, n, head, dir);
     printf("\nOverhead: %d\n", overhead);
 
     free(track);
