@@ -75,10 +75,17 @@ int main() {
     }
 
     printf("Enter the initial direction of movement (-1 for left, 1 for right): ");
-    int direction;
-    scanf("%d", &direction);
+    int dir;
+    scanf("%d", &dir);
 
-    int overhead = scan(track, n, head, direction);
+    if(dir==-1){
+        track[n]=0;//taking 0 as lowerbound
+    }
+    if(dir==-1){
+        track[n]=199;//taking 0 as upperbound
+    }
+
+    int overhead = scan(track, n, head, dir);
     printf("\nOverhead: %d\n", overhead);
 
     free(track);
