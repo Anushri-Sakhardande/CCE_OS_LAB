@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <limits.h>
 
-int look(int *track, int n, int head, bool direction) {
+int look(int *track, int n, int head, int dir) {
     int overhead = 0;
     int currentIndex = -1;
 
@@ -34,8 +34,6 @@ int look(int *track, int n, int head, bool direction) {
             }
         }
     }
-
-    int dir = direction ? 1 : -1;
 
     for (int i = currentIndex; i >= 0 && i < n; i += dir) {
         overhead += abs(track[i] - head);
@@ -69,11 +67,11 @@ int main() {
         getchar();
     }
 
-    printf("Enter the initial direction of movement (0 for left, 1 for right): ");
-    bool direction;
-    scanf("%d", &direction);
+    printf("Enter the initial direction of movement (-1 for left, 1 for right): ");
+    int dir;
+    scanf("%d", &dir);
 
-    int overhead = look(track, n, head, direction);
+    int overhead = look(track, n, head, dir);
     printf("\nOverhead: %d\n", overhead);
 
     free(track);

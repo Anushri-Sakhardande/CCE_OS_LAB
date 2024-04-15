@@ -14,7 +14,7 @@ void sort(int *track, int n) {
     }
 }
 
-int scan(int *track, int n, int head, bool direction) {
+int scan(int *track, int n, int head, int dir) {
     int overhead = 0;
     int index = -1;
 
@@ -39,22 +39,18 @@ int scan(int *track, int n, int head, bool direction) {
         }
     }
 
-    // Determine the initial direction
-    int dir = direction ? 1 : -1;
-
-    // Scan in the given direction
     for (int i = index; i >= 0 && i < n; i += dir) {
         overhead += abs(track[i] - head);
         head = track[i];
+        printf("%d\t",head);
     }
 
-    // Reverse direction
     dir *= -1;
 
-    // Scan in the reverse direction
     for (int i = index + dir; i >= 0 && i < n; i += dir) {
         overhead += abs(track[i] - head);
         head = track[i];
+        printf("%d\t",head);
     }
 
     return overhead;
@@ -78,8 +74,8 @@ int main() {
         getchar();
     }
 
-    printf("Enter the initial direction of movement (0 for left, 1 for right): ");
-    bool direction;
+    printf("Enter the initial direction of movement (-1 for left, 1 for right): ");
+    int direction;
     scanf("%d", &direction);
 
     int overhead = scan(track, n, head, direction);

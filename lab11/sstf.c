@@ -32,6 +32,7 @@ int sstf(int *track, int n, int head) {
         overhead += abs(track[closestTrack] - head);
         head = track[closestTrack];
         completed[closestTrack] = true;
+        printf("%d\t",head);
     }
     
     free(completed);

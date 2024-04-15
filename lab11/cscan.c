@@ -15,7 +15,7 @@ void sort(int *track, int n) {
     }
 }
 
-int cscan(int *track, int n, int head, bool direction) {
+int cscan(int *track, int n, int head, int dir) {
     int overhead = 0;
     int index = -1;
 
@@ -40,14 +40,12 @@ int cscan(int *track, int n, int head, bool direction) {
         }
     }
 
-    int dir = direction ? 1 : -1;
-
     for (int i = index; i >= 0 && i < n; i += dir) {
         overhead += abs(track[i] - head);
         head = track[i];
     }
 
-    if (direction) {
+    if (dir) {
         overhead += abs(track[n - 1] - track[0]);
         head = track[0];
     } else {
@@ -55,7 +53,7 @@ int cscan(int *track, int n, int head, bool direction) {
         head = track[n - 1];
     }
 
-    for (int i = (direction ? 0 : n - 1); i >= 0 && i < n; i += dir) {
+    for (int i = (dir ? 0 : n - 1); i >= 0 && i < n; i += dir) {
         overhead += abs(track[i] - head);
         head = track[i];
     }
@@ -81,11 +79,11 @@ int main() {
         getchar();
     }
 
-    printf("Enter the initial direction of movement (0 for left, 1 for right): ");
-    bool direction;
-    scanf("%d", &direction);
+    printf("Enter the initial direction of movement (-1 for left, 1 for right): ");
+    int dir;
+    scanf("%d", &dir);
 
-    int overhead = cscan(track, n, head, direction);
+    int overhead = cscan(track, n, head, dir);
     printf("\nOverhead: %d\n", overhead);
 
     free(track);
