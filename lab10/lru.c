@@ -11,13 +11,13 @@ bool contains(int arr[], int n, int key) {
     return false;
 }
 
-int findLRU(int frame[], int n, int ref[], int m) {
-    int lru_index = -1, farthest = -1;
-    for (int i = 0; i < n; i++) {
+int findLRU(int frame[], int m, int ref[], int x) {
+    int lru_index = -1, farthest = x;
+    for (int i = 0; i < m; i++) {
         int j;
-        for (j = m - 1; j >= 0; j--) {
+        for (j = x - 1; j >= 0; j--) {
             if (frame[i] == ref[j]) {
-                if (j > farthest) {
+                if (j < farthest) {
                     farthest = j;
                     lru_index = i;
                 }
