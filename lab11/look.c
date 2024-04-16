@@ -3,48 +3,50 @@
 #include <stdbool.h>
 #include <limits.h>
 
-int look(int *track, int n, int head, int dir) {
-    int overhead = 0;
-    int currentIndex = -1;
-
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = 0; j < n - i - 1; j++) {
-            if (track[j] > track[j + 1]) {
+void sort(int *track, int n)
+{
+    for (int i = 0; i < n - 1; i++)
+    {
+        for (int j = 0; j < n - i - 1; j++)
+        {
+            if (track[j] > track[j + 1])
+            {
                 int temp = track[j];
                 track[j] = track[j + 1];
                 track[j + 1] = temp;
             }
         }
     }
+}
 
-    for (int i = 0; i < n; i++) {
-        if (track[i] == head) {
-            currentIndex = i;
+int look(int *track, int n, int head, int dir) {
+    int overhead = 0;
+    int index = -1;
+
+    track[n] = head;
+    sort(track, n + 1);
+    for (int i = 0; i < n + 1; i++)
+    {
+        if (track[i] == head)
+        {
+            index = i;
             break;
         }
+        
     }
-
-    if (currentIndex == -1) {
-        track[n] = head;
-        n++;
-        for (int i = 0; i < n - 1; i++) {
-            if (track[i] > head) {
-                currentIndex = i;
-                break;
-            }
-        }
-    }
-
-
-    for (int i = currentIndex; i >= 0 && i < n; i += dir) {
+    printf("%d",head);
+    for (int i = index+dir; i >= 0 && i < n+1; i += dir) {
         overhead += abs(track[i] - head);
         head = track[i];
+        printf("%d\t",head);
     }
 
     dir *= -1;
-    for (int i = currentIndex + dir; i >= 0 && i < n; i += dir) {
+
+    for (int i = index + dir; i >= 0 && i < n+1; i += dir) {
         overhead += abs(track[i] - head);
         head = track[i];
+        printf("%d\t",head);
     }
 
     return overhead;

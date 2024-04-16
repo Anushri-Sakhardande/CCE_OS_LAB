@@ -3,65 +3,67 @@
 #include <stdbool.h>
 #include <limits.h>
 
-int look(int *track, int n, int head, int dir) {
-    int overhead = 0;
-    int currentIndex = -1;
-
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = 0; j < n - i - 1; j++) {
-            if (track[j] > track[j + 1]) {
+void sort(int *track, int n)
+{
+    for (int i = 0; i < n - 1; i++)
+    {
+        for (int j = 0; j < n - i - 1; j++)
+        {
+            if (track[j] > track[j + 1])
+            {
                 int temp = track[j];
                 track[j] = track[j + 1];
                 track[j + 1] = temp;
             }
         }
     }
+}
 
-    for (int i = 0; i < n; i++) {
-        if (track[i] == head) {
-            currentIndex = i;
+int clook(int *track, int n, int head, int dir)
+{
+    int initHead = head;
+    int overhead = 0;
+    int index = -1;
+
+    track[n] = head;
+    sort(track, n + 1);
+
+    for (int i = 0; i < n + 1; i++)
+    {
+        if (track[i] == head)
+        {
+            index = i;
             break;
         }
     }
 
-    if (currentIndex == -1) {
-        track[n] = head;
-        n++;
-        for (int i = 0; i < n - 1; i++) {
-            if (track[i] > head) {
-                currentIndex = i;
-                break;
-            }
-        }
-    }
+    printf("%d\t ", head);
 
-    for (int i = currentIndex; i >= 0 && i < n; i += dir) {
+    for (int i = index + dir; track[i] != initHead; i = (i + dir + n + 1) % (n + 1))
+    {
         overhead += abs(track[i] - head);
         head = track[i];
-    }
-
-    dir *= -1;
-    for (int i = currentIndex + dir; i >= 0 && i < n; i += dir) {
-        overhead += abs(track[i] - head);
-        head = track[i];
+        printf("%d\t", head);
     }
 
     return overhead;
 }
 
-int main() {
+int main()
+{
     int n, head;
     printf("Enter the number of tracks to be checked: ");
     scanf("%d", &n);
     getchar();
 
-    int *track = (int*)malloc((n + 1) * sizeof(int));
+    int *track = (int *)malloc((n + 1) * sizeof(int));
     printf("Enter the current head position: ");
     scanf("%d", &head);
     getchar();
 
     printf("Enter the tracks to be checked:\n");
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
+    {
         printf("Track %d: ", i + 1);
         scanf("%d", &track[i]);
         getchar();
@@ -71,7 +73,7 @@ int main() {
     int dir;
     scanf("%d", &dir);
 
-    int overhead = look(track, n, head, dir);
+    int overhead = clook(track, n, head, dir);
     printf("\nOverhead: %d\n", overhead);
 
     free(track);
