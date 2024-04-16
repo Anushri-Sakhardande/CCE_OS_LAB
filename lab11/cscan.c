@@ -25,33 +25,32 @@ int cscan(int *track, int n, int head, int dir)
     int overhead = 0;
     int index = -1;
 
-    track[n + 1] = head;
-    sort(track, n + 2);
-    for (int i = 0; i < n + 2; i++)
+    track[n + 2] = head;
+    sort(track, n + 3);
+    for (int i = 0; i < n + 3; i++)
     {
         if (track[i] == head)
         {
             index = i;
             break;
         }
-        
     }
     /*for(int i=0;i<n+2;i++){
         printf("%d\t",track[i]);
     }*/
-   printf("%d\t ", head);
-for (int i = index + dir; track[i] != initHead; i = (i + dir + n + 2) % (n + 2)) {
-    overhead += abs(track[i] - head);
-    head = track[i];
-    printf("%d\t", head);
-    /*if (i == -1) {
-        i = n + 1;
+    printf("%d\t ", head);
+    for (int i = index + dir; track[i] != initHead; i = (i + dir + n + 3) % (n + 3))
+    {
+        overhead += abs(track[i] - head);
+        head = track[i];
+        printf("%d\t", head);
+        /*if (i == -1) {
+            i = n + 1;
+        }
+        else if (i == n + 2) {
+            i = 0;
+        }*/
     }
-    else if (i == n + 2) {
-        i = 0;
-    }*/
-}
-
 
     return overhead;
 }
@@ -63,7 +62,7 @@ int main()
     scanf("%d", &n);
     getchar();
 
-    int *track = (int *)malloc((n + 2) * sizeof(int));
+    int *track = (int *)malloc((n + 3) * sizeof(int));
     printf("Enter the current head position: ");
     scanf("%d", &head);
     getchar();
@@ -79,15 +78,8 @@ int main()
     printf("Enter the initial direction of movement (-1 for left, 1 for right): ");
     int dir;
     scanf("%d", &dir);
-
-    if (dir == -1)
-    {
-        track[n] = 199; // taking 199 as upperbound
-    }
-    if (dir == 1)
-    {
-        track[n] = 0; // taking 0 as lowerbound
-    }
+    track[n] = 199; // taking 199 as upperbound
+    track[n+1] = 0;   // taking 0 as lowerbound
 
     int overhead = cscan(track, n, head, dir);
     printf("\nOverhead: %d\n", overhead);
